@@ -103,10 +103,10 @@ const { columns, columnChecks, data, loading, getData, getDataByPage } = useTabl
           ENABLED: 'success',
           DISABLED: 'warning'
         };
+        const status = row.status.toUpperCase() as Api.Common.EnableStatus;
+        const label = $t(enableStatusRecord[status]);
 
-        const label = $t(enableStatusRecord[row.status]);
-
-        return <NTag type={tagMap[row.status]}>{label}</NTag>;
+        return <NTag type={tagMap[status]}>{label}</NTag>;
       }
     },
     {

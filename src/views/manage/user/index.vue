@@ -64,7 +64,8 @@ const {
       align: 'center',
       minWidth: 80,
       render: row => {
-        return <NAvatar size="small" src={row.avatar} />;
+        const avatar = row.avatar?.replace(/^`|`$/g, '');
+        return <NAvatar size="small" src={avatar} />;
       }
     },
     {
@@ -95,14 +96,16 @@ const {
           return null;
         }
 
+        const status = row.status.toUpperCase() as Api.Common.EnableStatus;
+
         const tagMap: Record<Api.Common.EnableStatus, NaiveUI.ThemeColor> = {
           ENABLED: 'success',
           DISABLED: 'warning'
         };
 
-        const label = $t(enableStatusRecord[row.status]);
+        const label = $t(enableStatusRecord[status]);
 
-        return <NTag type={tagMap[row.status]}>{label}</NTag>;
+        return <NTag type={tagMap[status]}>{label}</NTag>;
       }
     },
     {
@@ -176,8 +179,7 @@ function edit(id: string) {
           @refresh="getData"
         />
       </template>
-      {{ columns }}--
-      {{ data }}
+
       <NDataTable
         v-model:checked-row-keys="checkedRowKeys"
         :columns="columns"

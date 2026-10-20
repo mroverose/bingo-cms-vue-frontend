@@ -107,6 +107,10 @@ pnpm i
 pnpm dev
 ```
 
+```powershell
+$env:PATH = "$env:TEMP\node22\node-v22.15.0-win-x64;$env:PATH"; node -v; pnpm -v; pnpm dev
+```
+
 **Build Project**
 
 ```bash

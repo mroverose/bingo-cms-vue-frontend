@@ -83,9 +83,15 @@ export function createRole(req: RoleModel) {
   return request({
     url: '/role',
     method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
     data: {
       pid: '0',
-      ...req
+      name: req.name,
+      code: req.code,
+      description: req.description,
+      status: req.status == 'DISABLED' ? 'disabled' : 'enabled',
     }
   });
 }
@@ -245,8 +251,19 @@ export type UserModel = Pick<
 export function createUser(req: UserModel) {
   return request({
     url: '/user',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
     method: 'post',
-    data: req
+    data: {
+      username: req.username,
+      password: req.password,
+      domain: req.domain,
+      nickName: req.nickName,
+      phoneNumber: req.phoneNumber,
+      email: req.email,
+      status: req.status == 'DISABLED' ? 'disabled' : 'enabled',
+    }
   });
 }
 

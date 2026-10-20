@@ -38,7 +38,12 @@ export function useTable<A extends NaiveUI.TableApiFn>(config: NaiveUI.NaiveTabl
     apiParams,
     columns: config.columns,
     transformer: res => {
-      const { records = [], current = 1, size = 10, total = 0 } = res.data || {};
+      const resData = res.data;
+
+      const records: any[] = resData?.records ?? [];
+      const current: number = resData?.current ?? 1;
+      const size: number = resData?.size ?? 10;
+      const total: number = resData?.total ?? 0;
 
       // Ensure that the size is greater than 0, If it is less than 0, it will cause paging calculation errors.
       const pageSize = size <= 0 ? 10 : size;
