@@ -4,7 +4,7 @@
 
 - pnpm workspace monorepo：根目录是 Vue 3 主应用，`packages/*` 是内部包（`@sa/axios`、`@sa/hooks`、`@sa/utils`、`@sa/materials`、`@sa/uno-preset`、`@sa/scripts` 等）。
 - 内部包直接从 `src` 导出 TypeScript 源码，没有构建步骤；修改后主应用立即生效。
-- 必须使用 pnpm。`pnpm-lock.yaml` + `pnpm-workspace.yaml` 是依赖事实来源；仓库里的 GitHub Actions 仍写成 `npm ci` 且上传 `build/`，与当前 pnpm workspace 不匹配，不要照搬。
+- 必须使用 pnpm。`pnpm-lock.yaml` + `pnpm-workspace.yaml` 是依赖事实来源；GitHub Actions 使用 `pnpm install --frozen-lockfile`、`pnpm build`，产物在 `dist/`。
 
 ## 常用命令
 
@@ -27,7 +27,7 @@ pnpm gen-route        # 交互式创建 src/views 页面骨架
 
 - `pnpm dev` 使用 `.env` + `.env.test`。前端 9527，默认把 `/proxy-default` 代理到 `VITE_SERVICE_BASE_URL`（`.env.test` 中为 `http://localhost:9528/`，即 NestJS 后端）。
 - 开发时看到代理 `ECONNREFUSED` 通常表示后端 9528 未启动，不是前端配置错误。
-- `.env` 被 `.gitignore` 忽略但开发必需（图标前缀、存储前缀等），不要删除；`.env.test`、`.env.prod` 已跟踪。
+- `.env` 是跟踪的共享默认配置（图标前缀、存储前缀等），CI 构建也依赖它，不要删除；本地敏感覆盖写入 `.env.local`（已忽略）。`.env.test`、`.env.prod` 也已跟踪。
 - 其他后端地址写在 `VITE_OTHER_SERVICE_BASE_URL`（json5），对应代理前缀为 `/proxy-<key>`；逻辑在 `src/utils/service.ts`。
 
 ## 已踩过的坑

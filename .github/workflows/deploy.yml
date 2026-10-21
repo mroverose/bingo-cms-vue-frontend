@@ -16,22 +16,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "23"
-          cache: "npm"
+          node-version: 23
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build project
-        run: npm run build
-        env:
-          CI: false
-          # 如需挂子路径，在这里加一行:
-          PUBLIC_URL: https://tools.mrover.top/cms-bingo
-          REACT_APP_BASE_URL: ${{ secrets.API_BASE_URL }}
+        run: pnpm build
 
       - name: Prepare deploy directory (make writable)
         uses: appleboy/ssh-action@v1.0.3
@@ -54,7 +52,7 @@ jobs:
           username: ${{ secrets.ECS_USER }}
           key: ${{ secrets.ECS_SSH_KEY }}
           passphrase: ${{ secrets.ECS_PHRASE }}
-          source: "build/"
+          source: "dist/"
           target: ${{ secrets.ECS_DEPLOY_PATH }}
           strip_components: 1
           overwrite: true
