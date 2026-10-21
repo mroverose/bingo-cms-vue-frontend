@@ -1,5 +1,7 @@
 packages:
   - "packages/*"
+overrides:
+  unconfig: 7.5.0
 allowBuilds:
   '@parcel/watcher': false
   esbuild: false

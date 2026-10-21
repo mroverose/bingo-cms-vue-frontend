@@ -31,29 +31,27 @@ export function fetchGetUserList(params?: Api.SystemManage.UserSearchParams) {
 }
 
 /** get menu list */
-export const fetchGetMenuList = () =>
-  request<Api.SystemManage.Menu[]>({
+export async function fetchGetMenuList(): Promise<
+  NaiveUI.FlatResponseData<Api.Common.PaginatingQueryRecord<Api.SystemManage.Menu>>
+> {
+  const response = await request<Api.SystemManage.Menu[]>({
     url: '/route',
     method: 'get'
-  })
-    .then(response => {
-      const menus = response.data || [];
-      return {
-        data: {
-          records: menus,
-          total: menus.length,
-          current: 1,
-          size: menus.length
-        },
-        error: null
-      };
-    })
-    .catch(error => {
-      return {
-        data: null,
-        error: error.message
-      };
-    });
+  });
+
+  const menus = response.data || [];
+
+  return {
+    data: {
+      records: menus,
+      total: menus.length,
+      current: 1,
+      size: menus.length
+    },
+    error: null,
+    response: response.response
+  };
+}
 
 /** get all pages */
 export function fetchGetAllPages() {
@@ -91,7 +89,7 @@ export function createRole(req: RoleModel) {
       name: req.name,
       code: req.code,
       description: req.description,
-      status: req.status == 'DISABLED' ? 'disabled' : 'enabled',
+      status: req.status === 'DISABLED' ? 'disabled' : 'enabled'
     }
   });
 }
@@ -262,7 +260,7 @@ export function createUser(req: UserModel) {
       nickName: req.nickName,
       phoneNumber: req.phoneNumber,
       email: req.email,
-      status: req.status == 'DISABLED' ? 'disabled' : 'enabled',
+      status: req.status === 'DISABLED' ? 'disabled' : 'enabled'
     }
   });
 }
