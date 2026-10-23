@@ -25,8 +25,6 @@ export function fetchPublicKey() {
   return request<string>({ url: '/auth/public-key' });
 }
 
-
-
 /** Get user info */
 export function fetchGetUserInfo() {
   return request<Api.Auth.UserInfo>({ url: '/auth/get-user-info' });
@@ -39,7 +37,7 @@ export function fetchGetUserInfo() {
  */
 export function fetchRefreshToken(refreshToken: string) {
   return request<Api.Auth.LoginToken>({
-    url: '/auth/refreshToken',
+    url: '/auth/refresh-token',
     method: 'post',
     data: {
       refreshToken
