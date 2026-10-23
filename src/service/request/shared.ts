@@ -15,8 +15,11 @@ async function handleRefreshToken() {
   const { resetStore } = useAuthStore();
 
   const rToken = localStg.get('refreshToken') || '';
+  if (!rToken) {
+    return false;
+  }
   const { error, data } = await fetchRefreshToken(rToken);
-  if (!error) {
+  if (!error && data) {
     localStg.set('token', data.token);
     localStg.set('refreshToken', data.refreshToken);
     return true;
